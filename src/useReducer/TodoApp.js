@@ -26,6 +26,24 @@ export const TodoApp = () => {
         localStorage.setItem('todos', JSON.stringify(todos))
      }, [todos]);
 
+    const handleDelete=(todoId)=>{
+        //crear la acction
+        const action = {
+            type:'delete',
+            payload: todoId
+        }
+        
+        //dispatch
+        dispatch(action);
+    }
+
+    const handleToggle = (todoId)=>{
+        dispatch ({
+            type:'toggle',
+            payload: todoId
+        })
+    }
+
     const handleSubmit=(e)=>{
         e.preventDefault();
         
@@ -54,17 +72,23 @@ export const TodoApp = () => {
             <hr/>
             <div className="row">
                 <div className="col-7">
-                    <ul>
+                    <ul className="list-group list0group-flush">
                         {
                             todos.map((todo, i)=>(
                                 <li
                                     key={todo.id}
                                     className="list-group-item"
                                 >
-                                    <p className="text-center">
+                                    <p 
+                                        className={`${todo.done && 'complete'}`}
+                                        onClick={()=>handleToggle(todo.id)}
+                                    >
                                         {i+1}.- {todo.desc}
                                     </p>
-                                    <button className="btn btn-danger"> 
+                                    <button 
+                                        className="btn btn-danger"
+                                        onClick={() => handleDelete(todo.id)}
+                                    > 
                                         Borrar
                                     </button>
                                 </li>
